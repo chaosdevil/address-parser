@@ -66,3 +66,6 @@ Scripts/
 share/
 pyvenv.cfg
 include/
+
+# external
+parsed_output/
