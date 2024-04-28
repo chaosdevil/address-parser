@@ -1,0 +1,11 @@
+ThaiAddressParser
+thaiaddress
+python-Levenshtein
+beautifulsoup4
+uvicorn
+gunicorn
+spacy
+deplacy
+python-socketio
+fastapi
+python-dotenv
