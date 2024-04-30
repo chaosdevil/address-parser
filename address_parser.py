@@ -1,3 +1,4 @@
+import os
 import thaiaddress
 import multiprocessing
 from pprint import pprint
@@ -6,6 +7,7 @@ from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from time import time
 
+
 def address_parser(address: str) -> str:
     
     result = thaiaddress.parse(text=address)
@@ -13,12 +15,19 @@ def address_parser(address: str) -> str:
     return result
 
 def parse_address_list(addresses: List[str]) -> List[Dict]:
-    parsed_result = []
-    for address in addresses:
-        result = thaiaddress.parse(text=address)
-        # print(type(result))
-        parsed_result.append(result)
+    # parsed_result = []
+    # for address in addresses:
+    #     result = thaiaddress.parse(text=address)
+    #     # print(type(result))
+    #     parsed_result.append(result)
+
+    start = time()
+    # parsed_addresses = []
+    with ThreadPoolExecutor() as executor:
+        parsed_result = executor.map(address_parser, addresses)
     
+    print(f"Time elapsed: {time() - start} secs")
+
     return parsed_result
 
 
@@ -27,7 +36,7 @@ if __name__ == "__main__":
         "88/99 หมู่บ้านศิริชัย ทวีวัฒนา เขตทวีวัฒนา กรุงเทพมหานคร 11170",
         "71 ซอยเลี่ยงเมืองนนทบุรี 3 แยก 2 ตำบลสวนใหญ่ อำเภอเมือง จังหวัดนนทบุรี 11000",
         "ไทยรัฐออนไลน์ บริษัท เทรนด์ วีจี3 จำกัด อาคาร 17 ชั้น 7, 9 เลขที่ 1 ถนนวิภาวดีรังสิต แขวงจอมพล เขตจตุจักร กรุงเทพฯ 10900 อีเมล: cs@thairath.co.th โทร: 02-127-1222 แฟกช์: 02-272-1783"
-    ] * 10000
+    ] * 100
     # start = time()
     # parsed_result = []
     # for address in addresses:
@@ -49,6 +58,10 @@ if __name__ == "__main__":
             f.write(str(address) + "\n")
         f.close()
     print(f"Time elapsed : {time() - start} secs")
+    result = parse_address_list(addresses)
+
+    # for res in result:
+    #     print(res)
     
     # for res in result:
     #     print(res)
